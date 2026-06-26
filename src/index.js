@@ -14,7 +14,7 @@ import { baremuxPath } from "@mercuryworkshop/bare-mux/node";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-let publicPath = path.resolve(process.cwd(), "scramjet");
+let publicPath = path.resolve(process.cwd(), "public");
 
 if (!fs.existsSync(path.join(publicPath, "index.html"))) {
     console.error(`[Fatal] index.html not found at ${publicPath}`);
