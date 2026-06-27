@@ -29,6 +29,26 @@ I love simplicity. That's why I built Altior Browser; a super simple self-hosted
 
 <br>
 
+## Blocked? Not a problem. (chromebooks only)
+
+### Webview Oobee steps (Out of box enviroment expolit)
+
+1. Press **↻ + ⏻** at the same time
+2. Press **Ctrl + Shift + Alt + r** to powerwash chromebook (BACKUP ANY IMPORTANT FILES OR PHOTOS BEFORE POWERWASH)
+3. After powerwash, do the steps until it says "Enterprise Enrollment"
+4. Turn wifi off in "Enterprise Enrollment"
+5. Click **Use as a personal device**
+6. In the email area **type in "google@d11.org"**
+7. Click **More sign-in options**
+8. Click **Sign-in with github**
+9. Scroll down to the very bottom and click on **docs**
+10. then scroll down again and click **ask the github community** 
+11. Go to search bar and type in **altior-browser**
+12. Click on first repo (should be this one)
+13. Click on the link on the side or under demo (**https://altior-browser.onrender.com**)
+
+<br>
+
 ## Run Localy
 
 ### Requirements
