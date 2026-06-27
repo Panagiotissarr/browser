@@ -4,7 +4,7 @@
 <h2> A simplistic proxy browser </h2>
 
 I love simplicity. That's why I built Altior Browser; a super simple self-hosted web proxy with a full tabbed-browser interface, using
-[Scramjet](https://github.com/MercuryWorkshop/scramjet). It serves a single-page
+[The Scramjet Proxy](https://github.com/MercuryWorkshop/scramjet). It serves a single-page
 "browser" UI that renders proxied sites in real tabs, complete with bookmarks, search suggestions, and a games sidebar.
 
 <br>
