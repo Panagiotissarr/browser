@@ -1111,16 +1111,54 @@ const scramjet = new ScramjetServiceWorker();
 
 let reactiveHealAttempted = false;
 
+function reloadingPage() {
+    return new Response(
+        "<!DOCTYPE html><html><head><meta charset=\\"utf-8\\">" +
+        "<meta name=\\"viewport\\" content=\\"width=device-width, initial-scale=1\\">" +
+        "<title>Loading\\u2026</title>" +
+        "<style>html,body{height:100%;margin:0}body{display:flex;align-items:center;justify-content:center;" +
+        "font-family:system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;background:#282828;color:#9aa0a6}</style>" +
+        "</head><body><p>Preparing proxy\\u2026</p>" +
+        "<script>try{var k='sj-reload-n',n=+(sessionStorage.getItem(k)||0);" +
+        "if(n<5){sessionStorage.setItem(k,n+1);setTimeout(function(){location.reload()},800);}" +
+        "else{sessionStorage.removeItem(k);document.body.innerHTML='<p>Could not start the proxy. Please reload the page.</p>';}}" +
+        "catch(e){setTimeout(function(){location.reload()},800);}<\\/script></body></html>",
+        { status: 503, headers: { "content-type": "text/html", "retry-after": "1" } }
+    );
+}
+
+async function loadConfigForced() {
+    scramjet.config = null;
+    await scramjet.loadConfig();
+    return !!(scramjet.config && scramjet.config.prefix);
+}
+
 async function handleRequest(event) {
+    let isProxied = false;
     try {
         await scramjet.loadConfig();
-        if (scramjet.route(event)) {
-            return scramjet.fetch(event);
+        if (!(scramjet.config && scramjet.config.prefix)) {
+            await ensureScramjetDB();
+            await loadConfigForced();
+        }
+        isProxied = scramjet.route(event);
+        if (isProxied) {
+            try {
+                return await scramjet.fetch(event);
+            } catch (inner) {
+                if (await loadConfigForced()) {
+                    return await scramjet.fetch(event);
+                }
+                throw inner;
+            }
         }
     } catch (e) {
         if (e && e.name === "NotFoundError" && !reactiveHealAttempted) {
             reactiveHealAttempted = true;
             await ensureScramjetDB();
+        }
+        if (isProxied || event.request.mode === "navigate") {
+            return reloadingPage();
         }
     }
     return fetch(event.request);
@@ -1188,9 +1226,16 @@ self.addEventListener("fetch", (event) => {
                     await conn.setTransport(TRANSPORT, [{ websocket: WISP_URL }]);
                 }
 
+                try {
+                    await scramjet.modifyConfig({});
+                } catch (e) {
+                    console.warn('Config push failed:', e && e.message);
+                }
+
                 scramjetReady = true;
                 readyResolvers.forEach(r => r());
                 readyResolvers = [];
+                try { sessionStorage.removeItem('sj-reload-n'); } catch (e) { }
                 console.log('Scramjet ready');
             } catch (err) {
                 console.error('Scramjet init failed:', err);
@@ -1232,6 +1277,7 @@ self.addEventListener("fetch", (event) => {
         async function fetchSuggestions(query) {
             query = (query || '').trim();
             if (!query) return [];
+            if (!scramjetReady) return [];
             try {
                 const url = `https://suggestqueries.google.com/complete/search?client=firefox&q=${encodeURIComponent(query)}`;
                 const target = proxyUrl(url);
