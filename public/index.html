@@ -1144,11 +1144,19 @@ self.addEventListener("fetch", (event) => {
                 });
             }
             if (!navigator.serviceWorker.controller) {
-                await Promise.race([
-                    new Promise(r => navigator.serviceWorker.addEventListener('controllerchange', r, { once: true })),
-                    new Promise(r => setTimeout(r, 1500)),
+                const claimed = await Promise.race([
+                    new Promise(r => navigator.serviceWorker.addEventListener('controllerchange', () => r(true), { once: true })),
+                    new Promise(r => setTimeout(() => r(false), 8000)),
                 ]);
+                if (!claimed && !navigator.serviceWorker.controller) {
+                    if (!sessionStorage.getItem('sw-reloaded')) {
+                        sessionStorage.setItem('sw-reloaded', '1');
+                        location.reload();
+                        await new Promise(() => { });
+                    }
+                }
             }
+            sessionStorage.removeItem('sw-reloaded');
         }
 
         async function initScramjet() {
