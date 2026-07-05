@@ -1792,7 +1792,28 @@ self.addEventListener("fetch", (event) => {
             if (tab.id === activeId) syncToolbar();
         }
 
+        function forceDarkScheme(win) {
+            try {
+                const stub = (q, matches) => ({
+                    media: q, matches, onchange: null,
+                    addListener() { }, removeListener() { },
+                    addEventListener() { }, removeEventListener() { },
+                    dispatchEvent() { return false; },
+                });
+                const realMM = typeof win.matchMedia === 'function' ? win.matchMedia.bind(win) : null;
+                win.matchMedia = function (q) {
+                    const s = String(q);
+                    if (/prefers-color-scheme\s*:\s*dark/i.test(s)) return stub(s, true);
+                    if (/prefers-color-scheme\s*:\s*light/i.test(s)) return stub(s, false);
+                    return realMM ? realMM(q) : stub(s, false);
+                };
+                const el = win.document && win.document.documentElement;
+                if (el) el.style.colorScheme = 'dark';
+            } catch (err) { }
+        }
+
         function onContextInit(tab, e) {
+            forceDarkScheme(e.window);
             try {
                 const win = e.window;
                 win.open = function (u) {
@@ -1819,6 +1840,19 @@ self.addEventListener("fetch", (event) => {
             setTimeout(() => updateMeta(tab), 60);
         }
 
+        function pickIcon(doc) {
+            const links = [...doc.querySelectorAll("link[rel~='icon'], link[rel='shortcut icon'], link[rel='apple-touch-icon']")]
+                .filter(l => l.getAttribute('href'));
+            if (!links.length) return null;
+            const media = l => (l.getAttribute('media') || '').toLowerCase();
+            const isDark = l => media(l).includes('dark');
+            const isLightOnly = l => media(l).includes('light') && !media(l).includes('dark');
+            return links.find(isDark)
+                || links.find(l => !media(l))
+                || links.find(l => !isLightOnly(l))
+                || links[0];
+        }
+
         function updateMeta(tab) {
             try {
                 const doc = tab.sframe && tab.sframe.frame.contentDocument;
@@ -1826,7 +1860,7 @@ self.addEventListener("fetch", (event) => {
                 if (doc.title) tab.title = doc.title;
                 else if (tab.url) { try { tab.title = new URL(tab.url).hostname.replace(/^www\./, ''); } catch (e) { } }
 
-                const link = doc.querySelector("link[rel~='icon'], link[rel='shortcut icon'], link[rel='apple-touch-icon']");
+                const link = pickIcon(doc);
                 let icon = link && proxyUrl(link.href);
                 if (!icon && tab.url) {
                     try { icon = proxyUrl(new URL('/favicon.ico', tab.url).href); } catch (e) { }
