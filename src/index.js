@@ -104,6 +104,22 @@ fastify.get("/get-dynamic-sw.js", (req, reply) => {
 });
 
 fastify.setNotFoundHandler((req, reply) => {
+    if (req.url.startsWith("/altior-navigator/scramjet/p/")) {
+        return reply
+            .code(503)
+            .header("Retry-After", "1")
+            .type("text/html")
+            .send(
+                "<!DOCTYPE html><html><head><meta charset=\"utf-8\">" +
+                "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">" +
+                "<title>Loading…</title>" +
+                "<style>html,body{height:100%;margin:0}body{display:flex;align-items:center;justify-content:center;" +
+                "font-family:system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;background:#282828;color:#9aa0a6}" +
+                "</style></head><body><p>Preparing proxy…</p>" +
+                "<script>setTimeout(function(){location.reload()},1000)</script>" +
+                "</body></html>"
+            );
+    }
     return reply
         .code(404)
         .type("text/html")
