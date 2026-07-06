@@ -1,6 +1,6 @@
 ![animation](https://github.com/user-attachments/assets/c4e33c62-5c22-4cf3-87c8-95df42c379b8)
 
-<h1> Altior Browser </h1> <h1 style="display: none;"> Proxy Browser <h1>
+<h1> Altior Browser </h1>
 <h2> A simplistic proxy browser </h2>
 
 I love simplicity. That's why I built Altior Browser; a super simple self-hosted web proxy with a full tabbed-browser interface, using
@@ -96,3 +96,11 @@ cd altior-browser && pnpm start
 - [@mercuryworkshop](https://github.com/MercuryWorkshop)/[bare-mux](https://github.com/MercuryWorkshop/bare-mux)
 - [@mercuryworkshop](https://github.com/MercuryWorkshop)/[libcurl-transport](https://github.com/MercuryWorkshop/libcurl-transport)
 - [@mercuryworkshop](https://github.com/MercuryWorkshop)/[wisp-js](https://github.com/MercuryWorkshop/wisp-js)
+
+<br>
+<br>
+
+<h1>Proxy Browser</h1>
+<h1>Proxy Unblocker</h1>
+<h1>Website Unblocker</h1>
+
