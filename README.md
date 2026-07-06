@@ -100,6 +100,8 @@ cd altior-browser && pnpm start
 <br>
 <br>
 
+## SEO:
+
 <h1>Proxy Browser</h1>
 <h1>Proxy Unblocker</h1>
 <h1>Website Unblocker</h1>
