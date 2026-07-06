@@ -1,6 +1,6 @@
 ![animation](https://github.com/user-attachments/assets/c4e33c62-5c22-4cf3-87c8-95df42c379b8)
 
-<h1> Altior Browser </h1>
+<h1> Altior Browser </h1> - <h1> Proxy Browser <h1>
 <h2> A simplistic proxy browser </h2>
 
 I love simplicity. That's why I built Altior Browser; a super simple self-hosted web proxy with a full tabbed-browser interface, using
