@@ -24,11 +24,5 @@
 		"@mercuryworkshop/wisp-js": "^0.4.1",
 		"ws": "^8.18.3"
 	},
-	"packageManager": "pnpm@10.18.3",
-	"pnpm": {
-    	"onlyBuiltDependencies": [
-      		"@mercuryworkshop/scramjet",
-      		"bufferutil"
-    	]
-  	}
+	"packageManager": "pnpm@10.18.3"
 }
