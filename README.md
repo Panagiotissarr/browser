@@ -64,7 +64,7 @@ git clone https://github.com/ltorl/altior-browser.git && cd altior-browser
 ```
 
 ```bash
-pnpm install
+pnpm install --allow-builds
 ```
 
 ```bash
