@@ -10,8 +10,7 @@ I love simplicity. That's why I built Altior Browser; a super simple self-hosted
 <br>
 
 ## Demo
-### [https://altior-browser.onrender.com](https://altior-browser.onrender.com)
-### if that is down then [http://66.33.8.192:8080/](http://66.33.8.192:8080/)
+### [https://altior-browser.vercel.app/](https://altior-browser.vercel.app/)
 
 <br>
 
