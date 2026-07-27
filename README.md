@@ -10,7 +10,7 @@ I love simplicity. That's why I built Altior Browser; a super simple self-hosted
 <br>
 
 ## Demo
-### [https://altior-browser.vercel.app](https://altior-browser.vercel.app)
+### [https://altior-browser.vercel.app](https://altior-browser.vercel.app) - Currently down because of vercel limits. If you want to host this on a real domain, create a pull request to add the link.
 
 <br>
 
