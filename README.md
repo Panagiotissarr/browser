@@ -10,7 +10,11 @@ I love simplicity. That's why I built Altior Browser; a super simple self-hosted
 <br>
 
 ## Demo
-### [https://altior-browser.vercel.app](https://altior-browser.vercel.app) - Currently down because of vercel limits. If you want to host this on a real domain, create a pull request to add the link.
+### [https://altior-browser.vercel.app](https://altior-browser.vercel.app)
+### [https://altior-browser.onrender.com](https://altior-browser.onrender.com)
+### [https://altior-browser.up.railway.app/](https://altior-browser.up.railway.app/) 
+
+Most will down because of limits unless it is toward the start of the month. If you want to host this on a real domain, create a pull request to add the link.
 
 <br>
 
@@ -45,7 +49,7 @@ I love simplicity. That's why I built Altior Browser; a super simple self-hosted
 10. then scroll down again and click **ask the github community** 
 11. Go to search bar and type in **altior-browser**
 12. Click on first repo (should be this one)
-13. Click on the link on the side or under demo (**https://altior-browser.onrender.com**)
+13. Click on the link on the side or under demo
 
 <br>
 
@@ -53,8 +57,8 @@ I love simplicity. That's why I built Altior Browser; a super simple self-hosted
 
 ### Requirements
 
-- **[Node.js](https://nodejs.org/en/download/current)** 18+ (the project targets `node >= 16`)
-- **[pnpm](https://pnpm.io/)** (the repo pins `pnpm@10` via `packageManager`)
+- **[Node.js](https://nodejs.org/en/download/current)** (22) 
+- **[pnpm](https://pnpm.io/)** (10)
 
 <br>
 
