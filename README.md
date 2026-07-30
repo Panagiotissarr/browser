@@ -12,7 +12,7 @@ I love simplicity. That's why I built Altior Browser; a super simple self-hosted
 ## Demo
 ### [https://altior-browser.vercel.app](https://altior-browser.vercel.app)
 ### [https://altior-browser.onrender.com](https://altior-browser.onrender.com)
-### [https://altior-browser.up.railway.app/](https://altior-browser.up.railway.app/) 
+### [https://altior-browser.up.railway.app](https://altior-browser.up.railway.app) 
 
 Most will down because of limits unless it is toward the start of the month. If you want to host this on a real domain, create a pull request to add the link.
 
