@@ -1,5 +1,5 @@
 {
-  "postCreateCommand": "corepack enable && pnpm install --dangerously-allow-all-builds",
+  "postCreateCommand": "pnpm install --dangerously-allow-all-builds",
   "postStartCommand": "pnpm start",
   "waitFor": "postStartCommand",
   "forwardPorts": [8080],
