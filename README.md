@@ -1,4 +1,4 @@
-![animation](https://github.com/user-attachments/assets/c4e33c62-5c22-4cf3-87c8-95df42c379b8)
+![animation](https://raw.githubusercontent.com/ltorl/readme-images/refs/heads/main/altior-browser.svg)
 
 <h1> Altior Browser </h1>
 <h2> A simplistic proxy browser </h2>
