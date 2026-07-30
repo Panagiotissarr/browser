@@ -1,5 +1,12 @@
 {
-  "name": "Altior Browser",
-  "postCreateCommand": "pnpm install --dangerously-allow-all-builds",
-  "postStartCommand": "pnpm start"
+  "postCreateCommand": "corepack enable && pnpm install --dangerously-allow-all-builds",
+  "postStartCommand": "pnpm start",
+  "waitFor": "postStartCommand",
+  "forwardPorts": [8080],
+  "portsAttributes": {
+    "8080": {
+      "onAutoForward": "openBrowser",
+      "visibility": "public"
+    }
+  }
 }
