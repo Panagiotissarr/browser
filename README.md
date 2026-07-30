@@ -16,7 +16,7 @@ I love simplicity. That's why I built Altior Browser; a super simple self-hosted
 
 Most will down because of limits unless it is toward the start of the month. If you want to host this on a real domain, create a pull request to add the link.
 
-### If all these are down you can demo with **Code -> Codespaces -> Create Codespace on main**. You may have to wait ~2 mins for the Codespace to set up. 
+### If all these are down you can demo with `Code -> Codespaces -> Create Codespace on main`. You may have to wait ~2 mins for the Codespace to set up. 
 
 <br>
 
