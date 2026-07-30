@@ -1,0 +1,5 @@
+{
+  "name": "Altior Browser",
+  "postCreateCommand": "pnpm install --dangerously-allow-all-builds",
+  "postStartCommand": "pnpm start"
+}
