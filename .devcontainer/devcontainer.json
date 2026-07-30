@@ -1,7 +1,6 @@
 {
   "postCreateCommand": "pnpm install --dangerously-allow-all-builds",
-  "postStartCommand": "pnpm start",
-  "waitFor": "postStartCommand",
+  "postAttachCommand": "nohup pnpm start >/tmp/altior.log 2>&1 &",
   "forwardPorts": [8080],
   "portsAttributes": {
     "8080": {
