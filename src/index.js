@@ -10,6 +10,14 @@ import fastifyStatic from "@fastify/static";
 import { scramjetPath } from "@mercuryworkshop/scramjet/path";
 import { libcurlPath } from "@mercuryworkshop/libcurl-transport";
 import { baremuxPath } from "@mercuryworkshop/bare-mux/node";
+import { uvPath } from "@titaniumnetwork-dev/ultraviolet";
+
+// Prefixes the front-end proxy engines route through. Keep in sync with
+// SJ_PREFIX / UV_PREFIX in public/index.html.
+const PROXY_PREFIXES = [
+    "/altior-navigator/scramjet/p/",
+    "/altior-navigator/uv/service/",
+];
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -82,6 +90,12 @@ fastify.register(fastifyStatic, {
     decorateReply: false,
 });
 
+fastify.register(fastifyStatic, {
+    root: uvPath,
+    prefix: "/uv/",
+    decorateReply: false,
+});
+
 fastify.get("/", (req, reply) => {
     try {
         const htmlPath = path.join(publicPath, "index.html");
@@ -104,7 +118,7 @@ fastify.get("/get-dynamic-sw.js", (req, reply) => {
 });
 
 fastify.setNotFoundHandler((req, reply) => {
-    if (req.url.startsWith("/altior-navigator/scramjet/p/")) {
+    if (PROXY_PREFIXES.some((p) => req.url.startsWith(p))) {
         return reply
             .code(503)
             .header("Retry-After", "1")

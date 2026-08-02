@@ -17,6 +17,7 @@
             --fg: #3c3c3c;
             --text: #e8e8e8;
             --muted: #9aa0a6;
+            --trash-icon: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M8 6V4a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/></svg>');
         }
 
         * {
@@ -474,22 +475,25 @@
             -webkit-user-drag: none;
         }
 
-        #games-btn {
+        #games-btn,
+        #settings-btn {
             margin-left: 2px;
         }
 
-        #games-btn img {
+        #games-btn img,
+        #settings-btn img {
             width: 22px;
             height: 22px;
             filter: none;
             -webkit-user-drag: none;
         }
 
-        #games-btn.active {
+        #games-btn.active,
+        #settings-btn.active {
             background: rgba(120, 170, 255, 0.18);
         }
 
-        #games-sidebar {
+        .sidebar {
             position: absolute;
             top: 0;
             right: 0;
@@ -507,11 +511,11 @@
             transition: transform 0.22s ease;
         }
 
-        #games-sidebar.open {
+        .sidebar.open {
             transform: translateX(0);
         }
 
-        #games-sidebar-head {
+        .sidebar-head {
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -520,9 +524,10 @@
             font-weight: 700;
             color: var(--text);
             border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            flex: 0 0 auto;
         }
 
-        #games-sidebar-close {
+        .sidebar-close {
             width: 30px;
             height: 30px;
             font-size: 20px;
@@ -530,7 +535,7 @@
             line-height: 1;
         }
 
-        #games-sidebar-list {
+        .sidebar-body {
             display: flex;
             flex-direction: column;
             gap: 8px;
@@ -554,6 +559,182 @@
             background: #45a29e;
             color: #0b0c10;
             transform: translateX(-2px);
+        }
+
+        .settingspage {
+            position: absolute;
+            inset: 0;
+            overflow-y: auto;
+            background: linear-gradient(135deg, #0b0c10 0%, #1f2833 100%);
+            color: var(--text);
+            padding: 40px 20px 60px;
+        }
+
+        .settingspage .set-inner {
+            width: 100%;
+            max-width: 640px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .settingspage .set-title {
+            font-size: 1.9rem;
+            font-weight: 800;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+        }
+
+        .set-group {
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 1.2px;
+            text-transform: uppercase;
+            color: var(--muted);
+            margin: 18px 4px 2px;
+        }
+
+        .set-option {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            padding: 12px 14px;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            color: var(--text);
+            cursor: pointer;
+            transition: background 0.15s ease, border-color 0.15s ease;
+        }
+
+        .set-option:hover {
+            background: rgba(255, 255, 255, 0.11);
+        }
+
+        .set-option.selected {
+            border-color: #45a29e;
+            background: rgba(69, 162, 158, 0.16);
+        }
+
+        .set-radio {
+            flex: 0 0 14px;
+            width: 14px;
+            height: 14px;
+            margin-top: 3px;
+            border-radius: 50%;
+            border: 2px solid var(--muted);
+            transition: border-color 0.15s ease, box-shadow 0.15s ease;
+        }
+
+        .set-option.selected .set-radio {
+            border-color: #66fcf1;
+            box-shadow: inset 0 0 0 3px #66fcf1;
+        }
+
+        .set-option .set-name {
+            font-size: 0.92rem;
+            font-weight: 600;
+        }
+
+        .set-option .set-desc {
+            font-size: 0.76rem;
+            line-height: 1.45;
+            color: var(--muted);
+            margin-top: 3px;
+        }
+
+        .set-status {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 0 6px;
+            font-size: 0.76rem;
+            color: var(--muted);
+        }
+
+        .set-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--muted);
+            flex: 0 0 8px;
+        }
+
+        .set-dot.ready {
+            background: #66fcf1;
+        }
+
+        .set-dot.failed {
+            background: #e06c6c;
+        }
+
+        .set-note {
+            padding: 0 6px;
+            font-size: 0.72rem;
+            line-height: 1.5;
+            color: var(--muted);
+        }
+
+        .set-site {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 10px 10px 14px;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            color: var(--text);
+            font-size: 0.88rem;
+        }
+
+        .set-site .set-site-name {
+            flex: 1 1 auto;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .set-site .set-del {
+            flex: 0 0 auto;
+            width: 30px;
+            height: 30px;
+            display: grid;
+            place-items: center;
+            border-radius: 8px;
+            border: none;
+            background: transparent;
+            padding: 0;
+            cursor: pointer;
+            transition: background 0.15s ease;
+        }
+
+        /* Masked so the glyph takes its colour from the button state. */
+        .set-site .set-del::before {
+            content: '';
+            width: 17px;
+            height: 17px;
+            background: var(--muted);
+            transition: background 0.15s ease;
+            -webkit-mask: var(--trash-icon) center / contain no-repeat;
+            mask: var(--trash-icon) center / contain no-repeat;
+        }
+
+        .set-site .set-del:hover {
+            background: rgba(224, 108, 108, 0.18);
+        }
+
+        .set-site .set-del:hover::before {
+            background: #ffb4b4;
+        }
+
+        .set-empty {
+            padding: 14px;
+            border-radius: 10px;
+            border: 1px dashed rgba(255, 255, 255, 0.14);
+            font-size: 0.82rem;
+            color: var(--muted);
+            text-align: center;
         }
 
         #bookmarksbar {
@@ -943,17 +1124,18 @@
                     <button id="star-btn" class="icon-btn" title="Bookmark this page"></button>
                 </div>
                 <button id="games-btn" class="icon-btn nav-btn" title="Games"></button>
+                <button id="settings-btn" class="icon-btn nav-btn" title="Settings"></button>
             </div>
             <div id="bookmarksbar"></div>
         </div>
 
         <div id="content">
-            <aside id="games-sidebar">
-                <div id="games-sidebar-head">
+            <aside id="games-sidebar" class="sidebar">
+                <div class="sidebar-head">
                     <span>Games</span>
-                    <button id="games-sidebar-close" class="icon-btn" title="Close">×</button>
+                    <button id="games-sidebar-close" class="icon-btn sidebar-close" title="Close">×</button>
                 </div>
-                <div id="games-sidebar-list"></div>
+                <div id="games-sidebar-list" class="sidebar-body"></div>
             </aside>
         </div>
 
@@ -977,10 +1159,11 @@
 
     <script type="module">
         import { BareMuxConnection } from '@mercuryworkshop/bare-mux';
-        import '/scram/scramjet.all.js';
 
         const HOST = location.origin;
-        const PREFIX = '/altior-navigator/scramjet/p/';
+        // Route prefixes per engine. Keep in sync with PROXY_PREFIXES in src/index.js.
+        const SJ_PREFIX = '/altior-navigator/scramjet/p/';
+        const UV_PREFIX = '/altior-navigator/uv/service/';
         const WISP_URL = (location.protocol === 'https:' ? 'wss' : 'ws') + '://' + location.host + '/wisp/';
         const TRANSPORT = HOST + '/libcurl/index.mjs';
 
@@ -994,6 +1177,23 @@
         const ICON_COLLAPSE = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAABCUlEQVR4AexRSw6CMBCdoh5BTyEoJrpzod7ZnRcQMUAMegONFzARQ53XAKmkgIkaN5BOO515n2aw6Mdfa9A44HZE3xuR67r90XiyRSBvVM4Ab/0DCKZkbUiIKQI5aplG7dFoACEIsopNgg4qiGzU0ON67ao1gACEWMGmlE7ykawQyFFDDxjOK1elgeM4AwgwU4nfu7SMouiKSBJroZsAyzjjMhqAILq9DTMK8aPvn/muVhx7F90EWHBUs7QZDUSntyZJQ7wSL9fFc/6LCWMVJ29qp9GApLiRlF6VeM4vTBirOHlDO40GYbCbh8F+Znq5xlUpTIAFRxVKm9GghPno2ho0jq8d0f9H9AQAAP//N0iYjwAAAAZJREFUAwAnwXoxn+SR2AAAAABJRU5ErkJggg==';
         const GAMES_ICON = 'data:image/png;base64,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';
         const SITE_ICON = 'data:image/png;base64,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';
+
+        // Internal page, shown in the URL bar and accepted as a typed address.
+        const SETTINGS_URL = 'altior://settings';
+        const SETTINGS_RE = /^altior:\/\/settings\/?$/i;
+
+        const SETTINGS_ICON = 'data:image/svg+xml,' + encodeURIComponent(
+            '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#e8e8e8" ' +
+            'stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">' +
+            '<circle cx="12" cy="12" r="3.1"/>' +
+            '<path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 ' +
+            '1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 ' +
+            '1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 ' +
+            '4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 ' +
+            '0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 ' +
+            '2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>' +
+            '</svg>'
+        );
 
         const GAMES = [
             ['3kh0 (Echo) Games', 'https://lite.3kh0.net/'],
@@ -1014,13 +1214,69 @@
             { type: 'application/javascript' }
         ));
 
-        let scramjet = null;
-        let scramjetReady = false;
+        // Selectable proxy back-ends. `create` returns an engine instance exposing
+        // init/encodeUrl/decodeUrl/createFrame; frames follow the Scramjet frame API
+        // (go/back/forward/reload + 'urlchange' and 'contextInit' events).
+        const ENGINES = {
+            scramjet: {
+                id: 'scramjet',
+                label: 'Scramjet',
+                prefix: SJ_PREFIX,
+                desc: 'The default. Best site compatibility and the fastest rewriter, but heavier on the browser.',
+                create: createScramjetEngine,
+            },
+            ultraviolet: {
+                id: 'ultraviolet',
+                label: 'Ultraviolet',
+                prefix: UV_PREFIX,
+                desc: 'Lighter and long-established. Handles some stubborn sites Scramjet chokes on, but breaks on others.',
+                create: createUltravioletEngine,
+            },
+        };
+
+        const SETTINGS_KEY = 'altior-settings';
+        const DEFAULT_SETTINGS = { engine: 'scramjet' };
+
+        let settings = Object.assign({}, DEFAULT_SETTINGS);
+        try {
+            const stored = JSON.parse(localStorage.getItem(SETTINGS_KEY) || '{}');
+            if (stored && typeof stored === 'object') Object.assign(settings, stored);
+        } catch (e) { }
+        if (!ENGINES[settings.engine]) settings.engine = DEFAULT_SETTINGS.engine;
+
+        function saveSettings() {
+            try { localStorage.setItem(SETTINGS_KEY, JSON.stringify(settings)); } catch (e) { }
+        }
+
+        let engine = null;
+        let engineReady = false;
+        let engineFailed = false;
         let readyResolvers = [];
 
+        const activeEngineDef = () => ENGINES[settings.engine];
+        const activePrefix = () => (engine && engine.prefix) || activeEngineDef().prefix;
+
         function whenReady() {
-            if (scramjetReady) return Promise.resolve();
+            if (engineReady) return Promise.resolve();
             return new Promise(r => readyResolvers.push(r));
+        }
+
+        function loadScript(src) {
+            return new Promise((resolve, reject) => {
+                const s = document.createElement('script');
+                s.src = src;
+                s.async = false;
+                s.onload = () => resolve();
+                s.onerror = () => reject(new Error('Failed to load ' + src));
+                document.head.appendChild(s);
+            });
+        }
+
+        async function setBareTransport() {
+            const conn = new BareMuxConnection(BAREMUX_WORKER);
+            if (await conn.getTransport() !== TRANSPORT) {
+                await conn.setTransport(TRANSPORT, [{ websocket: WISP_URL }]);
+            }
         }
 
         const REQUIRED_STORES = ['config', 'cookies', 'publicSuffixList', 'redirectTrackers', 'referrerPolicies'];
@@ -1046,7 +1302,7 @@
             });
         }
 
-        const swCode = `
+        const SCRAMJET_SW_CODE = `
 importScripts("/scram/scramjet.all.js");
 
 const REQUIRED_STORES = ["config", "cookies", "publicSuffixList", "redirectTrackers", "referrerPolicies"];
@@ -1169,7 +1425,74 @@ self.addEventListener("fetch", (event) => {
 });
 `;
 
-        async function ensureServiceWorker() {
+        // Ultraviolet's config cannot live only in this page: the service worker
+        // imports it, and UV injects it as a <script src> into every proxied
+        // document. Keeping the source here and serving it back through
+        // /get-dynamic-sw.js (the same route the service worker comes from) means
+        // the prefix and asset paths are still declared in one place.
+        const UV_CONFIG_CODE = `
+self.__uv$config = {
+    prefix: "${UV_PREFIX}",
+    encodeUrl: Ultraviolet.codec.xor.encode,
+    decodeUrl: Ultraviolet.codec.xor.decode,
+    handler: "/uv/uv.handler.js",
+    client: "/uv/uv.client.js",
+    bundle: "/uv/uv.bundle.js",
+    sw: "/uv/uv.sw.js",
+};
+`;
+
+        const UV_CONFIG_URL = '/get-dynamic-sw.js?code=' + encodeURIComponent(UV_CONFIG_CODE);
+
+        const UV_SW_CODE = `
+importScripts("/uv/uv.bundle.js");
+importScripts(${JSON.stringify(UV_CONFIG_URL)});
+// The config's own URL, which UV injects into the documents it rewrites. It is
+// set here rather than in the config source, which would have to embed itself.
+self.__uv$config.config = ${JSON.stringify(UV_CONFIG_URL)};
+importScripts("/uv/uv.sw.js");
+
+const uv = new UVServiceWorker();
+
+function reloadingPage() {
+    return new Response(
+        "<!DOCTYPE html><html><head><meta charset=\\"utf-8\\">" +
+        "<meta name=\\"viewport\\" content=\\"width=device-width, initial-scale=1\\">" +
+        "<title>Loading\\u2026</title>" +
+        "<style>html,body{height:100%;margin:0}body{display:flex;align-items:center;justify-content:center;" +
+        "font-family:system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;background:#282828;color:#9aa0a6}</style>" +
+        "</head><body><p>Preparing proxy\\u2026</p>" +
+        "<script>try{var k='uv-reload-n',n=+(sessionStorage.getItem(k)||0);" +
+        "if(n<5){sessionStorage.setItem(k,n+1);setTimeout(function(){location.reload()},800);}" +
+        "else{sessionStorage.removeItem(k);document.body.innerHTML='<p>Could not start the proxy. Please reload the page.</p>';}}" +
+        "catch(e){setTimeout(function(){location.reload()},800);}<\\/script></body></html>",
+        { status: 503, headers: { "content-type": "text/html", "retry-after": "1" } }
+    );
+}
+
+async function handleRequest(event) {
+    let isProxied = false;
+    try {
+        isProxied = uv.route(event);
+        if (isProxied) return await uv.fetch(event);
+    } catch (e) {
+        if (isProxied || event.request.mode === "navigate") {
+            return reloadingPage();
+        }
+    }
+    return fetch(event.request);
+}
+
+self.addEventListener("install", () => self.skipWaiting());
+
+self.addEventListener("activate", (event) => event.waitUntil(self.clients.claim()));
+
+self.addEventListener("fetch", (event) => {
+    event.respondWith(handleRequest(event));
+});
+`;
+
+        async function ensureServiceWorker(swCode) {
             if (!('serviceWorker' in navigator)) return;
             await navigator.serviceWorker.register(`/get-dynamic-sw.js?code=${encodeURIComponent(swCode)}`);
             const reg = await navigator.serviceWorker.ready;
@@ -1189,6 +1512,7 @@ self.addEventListener("fetch", (event) => {
                 if (!claimed && !navigator.serviceWorker.controller) {
                     if (!sessionStorage.getItem('sw-reloaded')) {
                         sessionStorage.setItem('sw-reloaded', '1');
+                        unloadExpected = true;
                         location.reload();
                         await new Promise(() => { });
                     }
@@ -1197,55 +1521,247 @@ self.addEventListener("fetch", (event) => {
             sessionStorage.removeItem('sw-reloaded');
         }
 
-        async function initScramjet() {
-            try {
-                await ensureScramjetDB();
-                await ensureServiceWorker();
-                await ensureScramjetDB();
-
-                const { ScramjetController } = $scramjetLoadController();
-                scramjet = new ScramjetController({
-                    prefix: PREFIX,
-                    files: {
-                        wasm: `${HOST}/scram/scramjet.wasm.wasm`,
-                        all: `${HOST}/scram/scramjet.all.js`,
-                        sync: `${HOST}/scram/scramjet.sync.js`,
-                    }
-                });
-
-                try {
-                    await scramjet.init();
-                } catch (e) {
-                    console.warn('Scramjet init retry after:', e && e.message);
+        function createScramjetEngine() {
+            let ctl = null;
+            return {
+                prefix: SJ_PREFIX,
+                async init() {
+                    await import('/scram/scramjet.all.js');
                     await ensureScramjetDB();
-                    await scramjet.init();
+                    await ensureServiceWorker(SCRAMJET_SW_CODE);
+                    await ensureScramjetDB();
+
+                    const { ScramjetController } = $scramjetLoadController();
+                    ctl = new ScramjetController({
+                        prefix: SJ_PREFIX,
+                        files: {
+                            wasm: `${HOST}/scram/scramjet.wasm.wasm`,
+                            all: `${HOST}/scram/scramjet.all.js`,
+                            sync: `${HOST}/scram/scramjet.sync.js`,
+                        }
+                    });
+
+                    try {
+                        await ctl.init();
+                    } catch (e) {
+                        console.warn('Scramjet init retry after:', e && e.message);
+                        await ensureScramjetDB();
+                        await ctl.init();
+                    }
+
+                    await setBareTransport();
+
+                    try {
+                        await ctl.modifyConfig({});
+                    } catch (e) {
+                        console.warn('Config push failed:', e && e.message);
+                    }
+
+                    try { sessionStorage.removeItem('sj-reload-n'); } catch (e) { }
+                },
+                encodeUrl: (u) => ctl.encodeUrl(u),
+                decodeUrl: (u) => ctl.decodeUrl(u),
+                createFrame: () => ctl.createFrame(),
+            };
+        }
+
+        function createUltravioletEngine() {
+            const uvConfig = () => self.__uv$config;
+
+            function encode(u) {
+                return UV_PREFIX + uvConfig().encodeUrl(u);
+            }
+
+            function decode(u) {
+                const i = u.indexOf(UV_PREFIX);
+                if (i === -1) return u;
+                return uvConfig().decodeUrl(u.slice(i + UV_PREFIX.length));
+            }
+
+            // Ultraviolet has no frame controller of its own, so wrap a plain iframe in
+            // the same surface Scramjet's frames expose. Proxied documents are
+            // same-origin, so the frame's window/history/location are all reachable.
+            function createFrame() {
+                const frame = document.createElement('iframe');
+                const listeners = { urlchange: [], contextInit: [] };
+
+                function emit(type, ev) {
+                    (listeners[type] || []).forEach(fn => { try { fn(ev); } catch (e) { } });
                 }
 
-                const conn = new BareMuxConnection(BAREMUX_WORKER);
-                if (await conn.getTransport() !== TRANSPORT) {
-                    await conn.setTransport(TRANSPORT, [{ websocket: WISP_URL }]);
+                let lastDoc = null;
+                let lastHref = '';
+
+                function poll() {
+                    let win, doc, href;
+                    try {
+                        win = frame.contentWindow;
+                        doc = win && win.document;
+                        href = win && win.location.href;
+                    } catch (e) {
+                        return;
+                    }
+                    if (!win || !doc || !href || href === 'about:blank') return;
+
+                    // A fresh document object means a real navigation committed; a bare
+                    // href change is an in-page (pushState) navigation.
+                    if (doc !== lastDoc) {
+                        lastDoc = doc;
+                        emit('contextInit', { window: win });
+                    }
+                    if (href !== lastHref) {
+                        lastHref = href;
+                        emit('urlchange', { url: decode(href) });
+                    }
                 }
 
-                try {
-                    await scramjet.modifyConfig({});
-                } catch (e) {
-                    console.warn('Config push failed:', e && e.message);
-                }
+                const timer = setInterval(poll, 60);
+                frame.addEventListener('load', poll);
 
-                scramjetReady = true;
+                const withWin = (fn) => {
+                    try { fn(frame.contentWindow); } catch (e) { }
+                };
+
+                return {
+                    frame,
+                    addEventListener(type, fn) {
+                        (listeners[type] = listeners[type] || []).push(fn);
+                    },
+                    go(url) { frame.src = encode(url); },
+                    back() { withWin(w => w.history.back()); },
+                    forward() { withWin(w => w.history.forward()); },
+                    reload() { withWin(w => w.location.reload()); },
+                    dispose() { clearInterval(timer); },
+                };
+            }
+
+            return {
+                prefix: UV_PREFIX,
+                async init() {
+                    await loadScript('/uv/uv.bundle.js');
+                    await loadScript(UV_CONFIG_URL);
+                    await ensureServiceWorker(UV_SW_CODE);
+                    await setBareTransport();
+                    try { sessionStorage.removeItem('uv-reload-n'); } catch (e) { }
+                },
+                encodeUrl: encode,
+                decodeUrl: decode,
+                createFrame,
+            };
+        }
+
+        async function initProxy() {
+            const def = activeEngineDef();
+            try {
+                engine = def.create();
+                await engine.init();
+                engineReady = true;
                 readyResolvers.forEach(r => r());
                 readyResolvers = [];
-                try { sessionStorage.removeItem('sj-reload-n'); } catch (e) { }
-                console.log('Scramjet ready');
+                console.log(`${def.label} ready`);
             } catch (err) {
-                console.error('Scramjet init failed:', err);
+                engineFailed = true;
+                console.error(`${def.label} init failed:`, err);
             }
+            renderAllSettings();
+        }
+
+        // Switching engines needs a full reload, so the open tabs are parked in
+        // sessionStorage and picked back up on the way in. sessionStorage keeps
+        // this scoped to the reload: a brand new session always starts empty.
+        const SESSION_KEY = 'altior-engine-session';
+
+        function saveSessionTabs() {
+            try {
+                sessionStorage.setItem(SESSION_KEY, JSON.stringify({
+                    active: Math.max(0, tabs.findIndex(t => t.id === activeId)),
+                    tabs: tabs.map(t => ({
+                        type: t.type,
+                        url: t.type === 'web' ? t.url : '',
+                        title: t.title,
+                        favicon: t.favicon,
+                        pinned: !!t.pinned,
+                    })),
+                }));
+            } catch (e) { }
+        }
+
+        // Reading it also clears it, so a later manual reload starts clean.
+        function takeSessionTabs() {
+            let raw = null;
+            try {
+                raw = sessionStorage.getItem(SESSION_KEY);
+                sessionStorage.removeItem(SESSION_KEY);
+            } catch (e) { return null; }
+            try {
+                const saved = raw ? JSON.parse(raw) : null;
+                return saved && Array.isArray(saved.tabs) && saved.tabs.length ? saved : null;
+            } catch (e) {
+                return null;
+            }
+        }
+
+        function restoreSessionTabs(saved) {
+            if (!saved) return false;
+            let restoredActive = null;
+
+            saved.tabs.forEach((s, i) => {
+                const tab = createTab();
+                if (!tab) return;
+                if (s.pinned) tab.pinned = true;
+                if (s.type === 'settings') {
+                    showSettings(tab);
+                } else if (s.type === 'web' && s.url) {
+                    // Shown straight away; navigateTab waits on the new engine and
+                    // updateMeta refreshes both once the page actually loads.
+                    tab.title = s.title || s.url;
+                    tab.favicon = s.favicon || NO_ICON;
+                    navigateTab(tab, s.url);
+                }
+                if (i === saved.active) restoredActive = tab.id;
+            });
+
+            if (!tabs.length) return false;
+            reorderPinned();
+            activateTab(restoredActive || tabs[0].id);
+            renderTabs();
+            return true;
+        }
+
+        // Closing or reloading the whole page throws away every tab, so the browser
+        // is asked to confirm first. Set while Altior reloads itself on purpose.
+        let unloadExpected = false;
+
+        window.addEventListener('beforeunload', (e) => {
+            if (unloadExpected) return;
+            e.preventDefault();
+            // Older browsers need one of these; the text itself is always ignored.
+            e.returnValue = '';
+            return '';
+        });
+
+        async function switchEngine(id) {
+            if (!ENGINES[id] || id === settings.engine) return;
+            settings.engine = id;
+            saveSettings();
+            saveSessionTabs();
+            unloadExpected = true;
+            try {
+                const regs = await navigator.serviceWorker.getRegistrations();
+                await Promise.all(regs.map(r => r.unregister()));
+            } catch (e) { }
+            try {
+                sessionStorage.removeItem('sj-reload-n');
+                sessionStorage.removeItem('uv-reload-n');
+                sessionStorage.removeItem('sw-reloaded');
+            } catch (e) { }
+            location.reload();
         }
 
         function decodeRealUrl(u) {
             try {
                 if (typeof u !== 'string') u = String(u);
-                if (u.includes(PREFIX)) return scramjet.decodeUrl(u);
+                if (engine && u.includes(engine.prefix)) return engine.decodeUrl(u);
                 return u;
             } catch (e) {
                 return u;
@@ -1257,9 +1773,9 @@ self.addEventListener("fetch", (event) => {
                 if (!u) return null;
                 if (typeof u !== 'string') u = String(u);
                 if (u.startsWith('data:') || u.startsWith('blob:')) return u;
-                if (u.includes(PREFIX)) return u;
-                if (!scramjet) return null;
-                return scramjet.encodeUrl(u);
+                if (u.includes(activePrefix())) return u;
+                if (!engine) return null;
+                return engine.encodeUrl(u);
             } catch (e) {
                 return null;
             }
@@ -1277,7 +1793,7 @@ self.addEventListener("fetch", (event) => {
         async function fetchSuggestions(query) {
             query = (query || '').trim();
             if (!query) return [];
-            if (!scramjetReady) return [];
+            if (!engineReady) return [];
             try {
                 const url = `https://suggestqueries.google.com/complete/search?client=firefox&q=${encodeURIComponent(query)}`;
                 const target = proxyUrl(url);
@@ -1419,6 +1935,7 @@ self.addEventListener("fetch", (event) => {
                 panel,
                 sframe: null,
                 newtabEl: null,
+                settingsEl: null,
                 hist: [],
                 histPtr: -1,
                 suppress: false,
@@ -1498,6 +2015,7 @@ self.addEventListener("fetch", (event) => {
         function removeTab(tab) {
             const idx = tabs.findIndex(t => t.id === tab.id);
             if (idx === -1) return;
+            if (tab.sframe && tab.sframe.dispose) tab.sframe.dispose();
             if (tab.panel) tab.panel.remove();
             tabs.splice(idx, 1);
             if (tabs.length === 0) {
@@ -1737,17 +2255,176 @@ self.addEventListener("fetch", (event) => {
 
         function showNewtab(tab) {
             if (tab.newtabEl) tab.newtabEl.style.display = '';
+            if (tab.settingsEl) tab.settingsEl.style.display = 'none';
             if (tab.sframe) tab.sframe.frame.style.display = 'none';
         }
 
         function showFrame(tab) {
             if (tab.newtabEl) tab.newtabEl.style.display = 'none';
+            if (tab.settingsEl) tab.settingsEl.style.display = 'none';
             if (tab.sframe) tab.sframe.frame.style.display = '';
+        }
+
+        // --- Settings page (altior://settings) ---------------------------------
+
+        function settingsSection(title) {
+            const h = document.createElement('div');
+            h.className = 'set-group';
+            h.textContent = title;
+            return h;
+        }
+
+        function buildEngineSection(inner) {
+            inner.appendChild(settingsSection('Proxy engine'));
+
+            Object.values(ENGINES).forEach(def => {
+                const opt = document.createElement('div');
+                opt.className = 'set-option' + (def.id === settings.engine ? ' selected' : '');
+
+                const radio = document.createElement('div');
+                radio.className = 'set-radio';
+
+                const text = document.createElement('div');
+                const name = document.createElement('div');
+                name.className = 'set-name';
+                name.textContent = def.label;
+                const desc = document.createElement('div');
+                desc.className = 'set-desc';
+                desc.textContent = def.desc;
+                text.append(name, desc);
+
+                opt.append(radio, text);
+                opt.addEventListener('click', async () => {
+                    if (def.id === settings.engine) return;
+                    const ok = await showConfirm(
+                        `Switch to ${def.label}?`,
+                        'Altior reloads to start the new engine. Your open tabs will reopen afterwards.'
+                    );
+                    if (ok) switchEngine(def.id);
+                });
+                inner.appendChild(opt);
+            });
+
+            const status = document.createElement('div');
+            status.className = 'set-status';
+            const dot = document.createElement('span');
+            dot.className = 'set-dot ' + (engineReady ? 'ready' : engineFailed ? 'failed' : '');
+            status.appendChild(dot);
+            status.appendChild(document.createTextNode(
+                engineReady ? `${activeEngineDef().label} ready`
+                    : engineFailed ? `${activeEngineDef().label} failed to start`
+                        : `Starting ${activeEngineDef().label}…`
+            ));
+            inner.appendChild(status);
+
+            const note = document.createElement('div');
+            note.className = 'set-note';
+            note.textContent = 'Only one engine runs per page load. Switching unregisters the current service worker and reloads.';
+            inner.appendChild(note);
+        }
+
+        function buildWindowSection(inner) {
+            inner.appendChild(settingsSection('Sites that can open new windows'));
+
+            const allowed = Object.keys(winDecisions).filter(o => winDecisions[o] === 'allow').sort();
+
+            if (!allowed.length) {
+                const empty = document.createElement('div');
+                empty.className = 'set-empty';
+                empty.textContent = 'No sites yet. When a site asks to open a new window and you allow it, it is remembered here.';
+                inner.appendChild(empty);
+                return;
+            }
+
+            allowed.forEach(origin => {
+                const row = document.createElement('div');
+                row.className = 'set-site';
+
+                const name = document.createElement('span');
+                name.className = 'set-site-name';
+                name.textContent = origin.replace(/^https?:\/\//, '');
+                name.title = origin;
+
+                const del = document.createElement('button');
+                del.className = 'set-del';
+                del.title = 'Remove ' + origin;
+                del.setAttribute('aria-label', 'Remove ' + origin);
+                del.addEventListener('click', () => {
+                    delete winDecisions[origin];
+                    saveWinDecisions();
+                    renderAllSettings();
+                });
+
+                row.append(name, del);
+                inner.appendChild(row);
+            });
+
+            const note = document.createElement('div');
+            note.className = 'set-note';
+            note.textContent = 'Removing a site makes Altior ask again the next time it tries to open a window.';
+            inner.appendChild(note);
+        }
+
+        function renderSettings(tab) {
+            if (!tab.settingsEl) return;
+            const inner = tab.settingsEl.querySelector('.set-inner');
+            inner.innerHTML = '';
+
+            const title = document.createElement('h1');
+            title.className = 'set-title';
+            title.textContent = 'Settings';
+            inner.appendChild(title);
+
+            buildEngineSection(inner);
+            buildWindowSection(inner);
+        }
+
+        // Settings state is global, so every open settings tab has to be redrawn.
+        function renderAllSettings() {
+            tabs.forEach(t => { if (t.settingsEl) renderSettings(t); });
+        }
+
+        function showSettings(tab) {
+            if (!tab) return;
+            if (!tab.settingsEl) {
+                const page = document.createElement('div');
+                page.className = 'settingspage';
+                const inner = document.createElement('div');
+                inner.className = 'set-inner';
+                page.appendChild(inner);
+                tab.panel.appendChild(page);
+                tab.settingsEl = page;
+            }
+            renderSettings(tab);
+
+            tab.type = 'settings';
+            tab.url = SETTINGS_URL;
+            tab.title = 'Settings';
+            tab.favicon = SETTINGS_ICON;
+            if (tab.newtabEl) tab.newtabEl.style.display = 'none';
+            if (tab.sframe) tab.sframe.frame.style.display = 'none';
+            tab.settingsEl.style.display = '';
+
+            renderTabs();
+            if (tab.id === activeId) syncToolbar();
+        }
+
+        function openSettings() {
+            const existing = tabs.find(t => t.type === 'settings');
+            if (existing) {
+                activateTab(existing.id);
+                renderSettings(existing);
+                return;
+            }
+            const cur = activeTab();
+            // Reuse an untouched new tab; otherwise open a fresh one.
+            const tab = (cur && cur.type === 'newtab' && !cur.hist.length) ? cur : (createTab() || cur);
+            showSettings(tab);
         }
 
         function ensureFrame(tab) {
             if (tab.sframe) return tab.sframe;
-            const sframe = scramjet.createFrame();
+            const sframe = engine.createFrame();
             const f = sframe.frame;
             f.classList.add('webframe');
             tab.panel.appendChild(f);
@@ -1760,6 +2437,7 @@ self.addEventListener("fetch", (event) => {
         }
 
         async function navigateTab(tab, query) {
+            if (SETTINGS_RE.test(String(query || '').trim())) return showSettings(tab);
             const url = normalizeUrl(query);
             if (!url) return;
             await whenReady();
@@ -1912,6 +2590,7 @@ self.addEventListener("fetch", (event) => {
 
         function reloadTab(tab) {
             if (!tab) return;
+            if (tab.type === 'settings') { renderSettings(tab); return; }
             if (tab.histPtr >= 0 && tab.sframe) tab.sframe.reload();
         }
 
@@ -1957,6 +2636,28 @@ self.addEventListener("fetch", (event) => {
         }
         function newId() {
             return 'b' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+        }
+
+        function isBookmarklet(node) {
+            return node && node.type === 'bookmark' && /^\s*javascript:/i.test(node.url || '');
+        }
+
+        function runBookmarklet(tab, rawUrl) {
+            if (!tab) return;
+            let code = String(rawUrl).replace(/^\s*javascript:/i, '');
+            try { code = decodeURIComponent(code); } catch (e) { }
+            const frame = tab.sframe && tab.sframe.frame;
+            const doc = frame && frame.contentDocument;
+            const win = frame && frame.contentWindow;
+            if (!doc || !win) return;
+            try {
+                const s = doc.createElement('script');
+                s.textContent = code;
+                (doc.body || doc.documentElement).appendChild(s);
+                s.remove();
+            } catch (e) {
+                try { win.eval(code); } catch (e2) { console.warn('Bookmarklet failed:', e2); }
+            }
         }
 
         function findBookmarkByUrl(url, list = bookmarks) {
@@ -2019,6 +2720,7 @@ self.addEventListener("fetch", (event) => {
                 const n = (locate(el.dataset.id) || {}).node;
                 if (!n) return;
                 if (n.type === 'folder') { e.stopPropagation(); openFolderDropdown(n, el); }
+                else if (isBookmarklet(n)) { const t = activeTab(); if (t) runBookmarklet(t, n.url); }
                 else { const t = activeTab(); if (t) navigateTab(t, n.url); }
             });
             el.addEventListener('contextmenu', (e) => {
@@ -2079,7 +2781,9 @@ self.addEventListener("fetch", (event) => {
                         lbl.textContent = child.title || child.url;
                         item.addEventListener('click', () => {
                             closeDropdowns();
-                            const t = activeTab(); if (t) navigateTab(t, child.url);
+                            const t = activeTab(); if (!t) return;
+                            if (isBookmarklet(child)) runBookmarklet(t, child.url);
+                            else navigateTab(t, child.url);
                         });
                     }
                     item.addEventListener('contextmenu', (e) => {
@@ -2176,11 +2880,13 @@ self.addEventListener("fetch", (event) => {
         }
 
         function labelTypewriter(tab, lowW, highW, durationMs) {
-            const fullTitle = tab.title || 'New Tab';
-            const totalUnits = fullTitle.length + 1;
             const range = Math.max(1, highW - lowW);
             const start = performance.now();
             function tick(now) {
+                // Read the title live: a tab can be renamed mid-animation (e.g. a new
+                // tab immediately becoming the settings page).
+                const fullTitle = tab.title || 'New Tab';
+                const totalUnits = fullTitle.length + 1;
                 const w = tab.el.getBoundingClientRect().width;
                 const p = Math.max(0, Math.min(1, (w - lowW) / range));
                 const vis = Math.round(totalUnits * p);
@@ -2486,7 +3192,38 @@ self.addEventListener("fetch", (event) => {
             try { localStorage.setItem('altior-win-decisions', JSON.stringify(winDecisions)); } catch (e) { }
         }
         function siteOrigin(tab) {
-            try { return new URL(tab.url).origin; } catch (e) { return (tab && tab.url) || ''; }
+            if (!tab || !/^https?:/i.test(tab.url || '')) return '';
+            try { return new URL(tab.url).origin; } catch (e) { return tab.url || ''; }
+        }
+
+        function showConfirm(title, msg, okLabel = 'Continue') {
+            return new Promise(resolve => {
+                modalBox.innerHTML = '';
+                const h = document.createElement('h3');
+                h.textContent = title;
+                const p = document.createElement('div');
+                p.className = 'modal-msg';
+                p.textContent = msg;
+
+                const actions = document.createElement('div');
+                actions.className = 'modal-actions';
+                const cancel = document.createElement('button');
+                cancel.className = 'btn-cancel'; cancel.textContent = 'Cancel';
+                const ok = document.createElement('button');
+                ok.className = 'btn-ok'; ok.textContent = okLabel;
+                actions.append(cancel, ok);
+                modalBox.append(h, p, actions);
+
+                function done(v) { modalOverlay.classList.remove('show'); resolve(v); }
+                cancel.addEventListener('click', () => done(false));
+                ok.addEventListener('click', () => done(true));
+                modalBox.addEventListener('keydown', function (e) {
+                    if (e.key === 'Enter') { e.preventDefault(); ok.click(); }
+                    if (e.key === 'Escape') { e.preventDefault(); cancel.click(); }
+                });
+                modalOverlay.classList.add('show');
+                ok.focus();
+            });
         }
 
         function showWindowWarning(url) {
@@ -2524,6 +3261,7 @@ self.addEventListener("fetch", (event) => {
             if (action === 'allow' && origin) {
                 winDecisions[origin] = 'allow';
                 saveWinDecisions();
+                renderAllSettings();
             }
         }
 
@@ -2602,6 +3340,10 @@ self.addEventListener("fetch", (event) => {
         gamesBtn.addEventListener('click', () => setGamesSidebar(!gamesSidebar.classList.contains('open')));
         document.getElementById('games-sidebar-close').addEventListener('click', () => setGamesSidebar(false));
 
+        const settingsBtn = document.getElementById('settings-btn');
+        settingsBtn.appendChild(imgEl(SETTINGS_ICON));
+        settingsBtn.addEventListener('click', () => openSettings());
+
         const siteBtn = document.getElementById('site-btn');
         const sitePanel = document.getElementById('site-panel');
         siteBtn.appendChild(imgEl(SITE_ICON));
@@ -2631,7 +3373,7 @@ self.addEventListener("fetch", (event) => {
             reset.textContent = 'Reset permission';
             reset.disabled = !(origin && winDecisions[origin]);
             reset.addEventListener('click', () => {
-                if (origin && winDecisions[origin]) { delete winDecisions[origin]; saveWinDecisions(); }
+                if (origin && winDecisions[origin]) { delete winDecisions[origin]; saveWinDecisions(); renderAllSettings(); }
                 renderSitePanel();
             });
             sitePanel.appendChild(reset);
@@ -2659,8 +3401,9 @@ self.addEventListener("fetch", (event) => {
         });
 
         renderBookmarks();
-        createTab();
-        initScramjet();
+        const carriedTabs = takeSessionTabs();
+        initProxy();
+        if (!restoreSessionTabs(carriedTabs)) createTab();
     </script>
 </body>
 

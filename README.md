@@ -4,7 +4,8 @@
 <h2> A simplistic proxy browser </h2>
 
 I love simplicity. That's why I built Altior Browser; a super simple self-hosted web proxy with a full tabbed-browser interface, using
-[The Scramjet Proxy](https://github.com/MercuryWorkshop/scramjet). It serves a single-page
+The [Scramjet](https://github.com/MercuryWorkshop/scramjet) or
+[Ultraviolet](https://github.com/titaniumnetwork-dev/ultraviolet) Proxy. It serves a single-page
 "browser" UI that renders proxied sites in real tabs, complete with bookmarks, search suggestions, and a games sidebar.
 
 <br>
@@ -23,12 +24,17 @@ Most will down because of limits unless it is toward the start of the month. If 
 ## Features
 
 - **Tabbed browsing** — open, close, pin, reorder (drag), and duplicate tabs.
-  Each tab is its own isolated Scramjet frame.
+  Each tab is its own isolated proxy frame.
+- **Switchable proxy engine** — Scramjet (default) or Ultraviolet, chosen from the
+  settings page. Sites that break under one often work under the other.
 - **Search suggestions** — live Google autocomplete in both the omnibox and the
   new-tab page, fetched same-origin through the proxy.
 - **Bookmarks bar** — add, edit, and organize bookmarks into folders.
 - **Games sidebar** — a one-click panel (icon to the right of the URL bar) with a
   curated list of game sites.
+- **Settings page** — `altior://settings`, opened with the gear icon to the right
+  of the games icon. Picks the proxy engine, shows whether it started cleanly, and
+  lists the sites allowed to open new windows so you can remove them.
 - **Proxied favicons** — site icons load through the proxy so they aren't blocked
   by the page's cross-origin isolation policy.
 - **Collapsible chrome** — hide the whole toolbar/tab strip for a fullscreen view.
@@ -102,6 +108,7 @@ cd altior-browser && pnpm start
 - [@mercuryworkshop](https://github.com/MercuryWorkshop)/[bare-mux](https://github.com/MercuryWorkshop/bare-mux)
 - [@mercuryworkshop](https://github.com/MercuryWorkshop)/[libcurl-transport](https://github.com/MercuryWorkshop/libcurl-transport)
 - [@mercuryworkshop](https://github.com/MercuryWorkshop)/[wisp-js](https://github.com/MercuryWorkshop/wisp-js)
+- [@titaniumnetwork-dev](https://github.com/titaniumnetwork-dev)/[ultraviolet](https://github.com/titaniumnetwork-dev/ultraviolet)
 
 <br>
 <br>
