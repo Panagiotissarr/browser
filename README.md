@@ -90,6 +90,14 @@ cd altior-browser && pnpm start
 ```
 
 <br>
+<br>
+
+### Omniline
+```bash
+git clone https://github.com/ltorl/altior-browser.git && cd altior-browser && pnpm install --dangerously-allow-all-builds && pnpm start & open http://localhost:8080
+```
+
+<br>
 
 ## Server Deployments:
 
