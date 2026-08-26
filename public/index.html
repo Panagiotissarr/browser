@@ -1405,6 +1405,10 @@ async function loadConfigForced() {
 async function handleRequest(event) {
     let isProxied = false;
     try {
+        const url = event.request.url;
+        if (!url || url === "about:blank" || url.startsWith("blob:") || url.startsWith("data:")) {
+            return fetch(event.request);
+        }
         await scramjet.loadConfig();
         if (!(scramjet.config && scramjet.config.prefix)) {
             await ensureScramjetDB();
@@ -1418,19 +1422,23 @@ async function handleRequest(event) {
             try {
                 return await scramjet.fetch(event);
             } catch (inner) {
-                if (inner && inner.message && inner.message.includes('SSL connect error') && scramjet.config && scramjet.config.prefix) {
+                const isSSL = inner && inner.message && inner.message.includes('SSL connect error');
+                if (isSSL && scramjet.config && scramjet.config.prefix) {
                     try {
                         const prefix = scramjet.config.prefix;
-                        const urlObj = new URL(event.request.url);
-                        if (urlObj.pathname.startsWith(prefix)) {
-                            let target = decodeURIComponent(urlObj.pathname.slice(prefix.length));
+                        const reqUrl = event.request.url;
+                        const idx = reqUrl.indexOf(prefix);
+                        if (idx !== -1) {
+                            let target = decodeURIComponent(reqUrl.slice(idx + prefix.length));
                             if (target.startsWith('https://')) {
                                 target = 'http://' + target.slice(8);
-                                const newProxyUrl = urlObj.origin + prefix + encodeURIComponent(target);
-                                return await scramjet.fetch({ request: new Request(newProxyUrl, event.request) });
+                                const httpUrl = reqUrl.slice(0, idx + prefix.length) + encodeURIComponent(target);
+                                const httpReq = new Request(httpUrl, event.request);
+                                const fakeEvt = Object.assign(Object.create(event), { request: httpReq });
+                                return await scramjet.fetch(fakeEvt);
                             }
                         }
-                    } catch (httpErr) { /* fall through to normal error handling */ }
+                    } catch (httpErr) { /* fall through */ }
                 }
                 if (await loadConfigForced()) {
                     return await scramjet.fetch(event);
@@ -1441,17 +1449,21 @@ async function handleRequest(event) {
     } catch (e) {
         if (e && e.name === "NotFoundError" && !reactiveHealAttempted) {
             reactiveHealAttempted = true;
-            await ensureScramjetDB();
+            try { await ensureScramjetDB(); } catch (_) {}
         }
         if (isProxied || event.request.mode === "navigate") {
             return reloadingPage();
         }
     }
-    return fetch(event.request);
+    try {
+        return await fetch(event.request);
+    } catch (_) {
+        return reloadingPage();
+    }
 }
 
 self.addEventListener("fetch", (event) => {
-    event.respondWith(handleRequest(event));
+    event.respondWith(handleRequest(event).catch(() => reloadingPage()));
 });
 `;
 
@@ -1503,6 +1515,10 @@ function reloadingPage() {
 async function handleRequest(event) {
     let isProxied = false;
     try {
+        const url = event.request.url;
+        if (!url || url === "about:blank" || url.startsWith("blob:") || url.startsWith("data:")) {
+            return fetch(event.request);
+        }
         isProxied = uv.route(event);
         if (isProxied) return await uv.fetch(event);
     } catch (e) {
