@@ -1133,7 +1133,7 @@
                 <div id="urlbar">
                     <button id="site-btn" class="icon-btn" title="Site settings"></button>
                     <input id="url-input" type="text" spellcheck="false" autocomplete="off"
-                        placeholder="Search DuckDuckSOn or enter a URL">
+                        placeholder="Search DuckDuckSon or enter a URL">
                     <button id="star-btn" class="icon-btn" title="Bookmark this page"></button>
                 </div>
                 <button id="games-btn" class="icon-btn nav-btn" title="Games"></button>
@@ -1406,8 +1406,8 @@ async function handleRequest(event) {
     let isProxied = false;
     try {
         const url = event.request.url;
-        if (!url || url === "about:blank" || url.startsWith("blob:") || url.startsWith("data:")) {
-            return fetch(event.request);
+        if (!url || url === "about:blank") {
+            return new Response(null, { status: 404 });
         }
         await scramjet.loadConfig();
         if (!(scramjet.config && scramjet.config.prefix)) {
@@ -1516,8 +1516,8 @@ async function handleRequest(event) {
     let isProxied = false;
     try {
         const url = event.request.url;
-        if (!url || url === "about:blank" || url.startsWith("blob:") || url.startsWith("data:")) {
-            return fetch(event.request);
+        if (!url || url === "about:blank") {
+            return new Response(null, { status: 404 });
         }
         isProxied = uv.route(event);
         if (isProxied) return await uv.fetch(event);
@@ -1893,7 +1893,7 @@ self.addEventListener("fetch", (event) => {
             function urlItems(q) {
                 return [
                     { label: q, query: q, cls: 'open-link' },
-                    { label: q + ' - DuckDuckSOn Search', query: `https://duckduckgo.com/?q=${encodeURIComponent(q)}` },
+                    { label: q + ' - DuckDuckSon Search', query: `https://duckduckgo.com/?q=${encodeURIComponent(q)}` },
                 ];
             }
 
@@ -2277,7 +2277,7 @@ self.addEventListener("fetch", (event) => {
             group.className = 'nt-input-group';
             const input = document.createElement('input');
             input.className = 'nt-input';
-            input.placeholder = 'Search with DuckDuckSOn or enter URL...';
+            input.placeholder = 'Search with DuckDuckSon or enter URL...';
             input.spellcheck = false;
             const go = document.createElement('button');
             go.className = 'nt-go';
