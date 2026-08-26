@@ -1408,13 +1408,30 @@ async function handleRequest(event) {
         await scramjet.loadConfig();
         if (!(scramjet.config && scramjet.config.prefix)) {
             await ensureScramjetDB();
-            await loadConfigForced();
+            if (!(await loadConfigForced())) {
+                if (event.request.mode === "navigate") return reloadingPage();
+                return fetch(event.request);
+            }
         }
         isProxied = scramjet.route(event);
         if (isProxied) {
             try {
                 return await scramjet.fetch(event);
             } catch (inner) {
+                if (inner && inner.message && inner.message.includes('SSL connect error') && scramjet.config && scramjet.config.prefix) {
+                    try {
+                        const prefix = scramjet.config.prefix;
+                        const urlObj = new URL(event.request.url);
+                        if (urlObj.pathname.startsWith(prefix)) {
+                            let target = decodeURIComponent(urlObj.pathname.slice(prefix.length));
+                            if (target.startsWith('https://')) {
+                                target = 'http://' + target.slice(8);
+                                const newProxyUrl = urlObj.origin + prefix + encodeURIComponent(target);
+                                return await scramjet.fetch({ request: new Request(newProxyUrl, event.request) });
+                            }
+                        }
+                    } catch (httpErr) { /* fall through to normal error handling */ }
+                }
                 if (await loadConfigForced()) {
                     return await scramjet.fetch(event);
                 }
