@@ -475,10 +475,12 @@
             -webkit-user-drag: none;
         }
 
+        #games-btn,
         #settings-btn {
             margin-left: 2px;
         }
 
+        #games-btn img,
         #settings-btn img {
             width: 22px;
             height: 22px;
@@ -486,6 +488,7 @@
             -webkit-user-drag: none;
         }
 
+        #games-btn.active,
         #settings-btn.active {
             background: rgba(120, 170, 255, 0.18);
         }
@@ -540,7 +543,23 @@
             overflow-y: auto;
         }
 
+        #games-sidebar-list .gs-link {
+            padding: 12px 16px;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            color: var(--text);
+            font-size: 0.92rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.15s ease, transform 0.15s ease;
+        }
 
+        #games-sidebar-list .gs-link:hover {
+            background: #4850E0;
+            color: #0b0c10;
+            transform: translateX(-2px);
+        }
 
         .settingspage {
             position: absolute;
@@ -1104,9 +1123,20 @@
                         placeholder="Search DuckDuckGo or enter a URL">
                     <button id="star-btn" class="icon-btn" title="Bookmark this page"></button>
                 </div>
+                <button id="games-btn" class="icon-btn nav-btn" title="Games"></button>
                 <button id="settings-btn" class="icon-btn nav-btn" title="Settings"></button>
             </div>
             <div id="bookmarksbar"></div>
+        </div>
+
+        <div id="content">
+            <aside id="games-sidebar" class="sidebar">
+                <div class="sidebar-head">
+                    <span>Games</span>
+                    <button id="games-sidebar-close" class="icon-btn sidebar-close" title="Close">×</button>
+                </div>
+                <div id="games-sidebar-list" class="sidebar-body"></div>
+            </aside>
         </div>
 
         <div id="url-suggest"></div>
@@ -1145,6 +1175,7 @@
         const ICON_FWD = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAkElEQVR4AeyQUQrAIAxDt93/zpsPVigd1kbwawrBCmme5DoWnw0YFvyziu73DHtxhqmK4LiMdJQAZzuWVoVIAMIb4+RGFYgMIFiBdAH8LhMgEz6b490FROPsuwughkweiM+//dwFeFOcfSVZOHsyQAmXAWq4DGABjWrBY5IqIhjZcuWWAJXA6NmA2MjnvbyiBwAA//+OcqznAAAABklEQVQDAKZPSDHM2iJ9AAAAAElFTkSuQmCC';
         const ICON_RELOAD = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAA6ElEQVR4AezTUQqDQAwE0LYXELyB9z+UNxA8QctbjMjiZv3xqxamyWaSmZDSz+vmz2PQPfCfnGie5++yLDu8wX1EnPwM3RMZHoZhn13X9eUNxHeikaQGIUB0HMc3TNNUohoTaGiXctOAuGFCREv39oXb0m5oGhA3XYur4UDeQ9PAoO3FGk5Vo+6Jd2pwZUvnghCsY2pQN5+9e0s0DeI82XYZF8s0DeLHteGZkBrOItEbosfYNNDkhyRAyB+OqAhqejJxfGqggQATeYjK1Swgz9A1MMyE2BFquB4uGfREMv4xyK5TuNtP9AMAAP//Bkw8dgAAAAZJREFUAwDUanox3hqaEAAAAABJRU5ErkJggg==';
         const ICON_COLLAPSE = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAABCUlEQVR4AexRSw6CMBCdoh5BTyEoJrpzod7ZnRcQMUAMegONFzARQ53XAKmkgIkaN5BOO515n2aw6Mdfa9A44HZE3xuR67r90XiyRSBvVM4Ab/0DCKZkbUiIKQI5aplG7dFoACEIsopNgg4qiGzU0ON67ao1gACEWMGmlE7ykawQyFFDDxjOK1elgeM4AwgwU4nfu7SMouiKSBJroZsAyzjjMhqAILq9DTMK8aPvn/muVhx7F90EWHBUs7QZDUSntyZJQ7wSL9fFc/6LCWMVJ29qp9GApLiRlF6VeM4vTBirOHlDO40GYbCbh8F+Znq5xlUpTIAFRxVKm9GghPno2ho0jq8d0f9H9AQAAP//N0iYjwAAAAZJREFUAwAnwXoxn+SR2AAAAABJRU5ErkJggg==';
+        const GAMES_ICON = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
         const SITE_ICON = 'data:image/png;base64,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';
 
         // Internal page, shown in the URL bar and accepted as a typed address.
@@ -1163,6 +1194,20 @@
             '2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>' +
             '</svg>'
         );
+
+        const GAMES = [
+            ['3kh0 (Echo) Games', 'https://lite.3kh0.net/'],
+            ['RETRO GAMES', 'https://theooofficial.github.io/myRETROGAMES/'],
+            ['Bin Bash Games', 'https://bidoofery.github.io/gfiles/list.html'],
+            ['Native Games', 'https://bidoofery.github.io/nativegames/'],
+            ['GAMEBOY Advance Games', 'https://bidoofery.github.io/gam3b0y/'],
+            ['GBA Online Games', 'https://gba.js.org/'],
+            ['OutRed Games', 'https://outred.org/games.html'],
+            ['GBA Emulator Games', 'https://theclashman2.github.io/GBA-Emulator/'],
+            ['Unblocked Games World', 'https://sites.google.com/site/thegamecompilation/home?authuser=0'],
+            ['Now.gg Games', 'https://now.gg/'],
+            ['Dancing Bunny Games', 'https://ltorl.github.io/dancing-bunny/public/v2.html'],
+        ];
 
         const BAREMUX_WORKER = URL.createObjectURL(new Blob(
             [`importScripts("${HOST}/baremux/worker.js");`],
@@ -1835,6 +1880,7 @@ self.addEventListener("fetch", (event) => {
         }
 
         const tabsEl = document.getElementById('tabs');
+        const contentEl = document.getElementById('content');
         const urlInput = document.getElementById('url-input');
 
         let tabs = [];
@@ -1878,6 +1924,7 @@ self.addEventListener("fetch", (event) => {
             const id = ++tabSeq;
             const panel = document.createElement('div');
             panel.className = 'panel';
+            contentEl.appendChild(panel);
 
             const tab = {
                 id,
@@ -3268,7 +3315,30 @@ self.addEventListener("fetch", (event) => {
         document.getElementById('btn-reload').appendChild(imgEl(ICON_RELOAD));
         starBtn.appendChild(imgEl(STAR_OFF));
 
+        const gamesBtn = document.getElementById('games-btn');
+        const gamesSidebar = document.getElementById('games-sidebar');
+        const gamesList = document.getElementById('games-sidebar-list');
+        gamesBtn.appendChild(imgEl(GAMES_ICON));
 
+        function setGamesSidebar(open) {
+            gamesSidebar.classList.toggle('open', open);
+            gamesBtn.classList.toggle('active', open);
+        }
+
+        GAMES.forEach(([label, url]) => {
+            const link = document.createElement('div');
+            link.className = 'gs-link';
+            link.textContent = label;
+            link.addEventListener('click', () => {
+                const tab = tabs.find(t => t.id === activeId);
+                if (tab) navigateTab(tab, url);
+                setGamesSidebar(false);
+            });
+            gamesList.appendChild(link);
+        });
+
+        gamesBtn.addEventListener('click', () => setGamesSidebar(!gamesSidebar.classList.contains('open')));
+        document.getElementById('games-sidebar-close').addEventListener('click', () => setGamesSidebar(false));
 
         const settingsBtn = document.getElementById('settings-btn');
         settingsBtn.appendChild(imgEl(SETTINGS_ICON));
