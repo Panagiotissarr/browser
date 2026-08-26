@@ -15,8 +15,8 @@ import { uvPath } from "@titaniumnetwork-dev/ultraviolet";
 // Prefixes the front-end proxy engines route through. Keep in sync with
 // SJ_PREFIX / UV_PREFIX in public/index.html.
 const PROXY_PREFIXES = [
-    "/altior-navigator/scramjet/p/",
-    "/altior-navigator/uv/service/",
+    "/panagiotis-navigator/scramjet/p/",
+    "/panagiotis-navigator/uv/service/",
 ];
 
 const __filename = fileURLToPath(import.meta.url);

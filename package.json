@@ -1,7 +1,7 @@
 {
-  "name": "altior-browser",
+  "name": "panas-browser",
   "version": "2.0.0",
-  "description": "a scramjet launcher",
+  "description": "a browser made to unblock websites on school",
   "type": "module",
   "engines": {
     "node": ">=22",
