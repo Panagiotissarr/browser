@@ -1128,16 +1128,6 @@
             <div id="bookmarksbar"></div>
         </div>
 
-        <div id="content">
-            <aside id="games-sidebar" class="sidebar">
-                <div class="sidebar-head">
-                    <span>Games</span>
-                    <button id="games-sidebar-close" class="icon-btn sidebar-close" title="Close">×</button>
-                </div>
-                <div id="games-sidebar-list" class="sidebar-body"></div>
-            </aside>
-        </div>
-
         <div id="url-suggest"></div>
         <div id="site-panel"></div>
     </div>
@@ -1193,20 +1183,6 @@
             '2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>' +
             '</svg>'
         );
-
-        const GAMES = [
-            ['3kh0 (Echo) Games', 'https://lite.3kh0.net/'],
-            ['RETRO GAMES', 'https://theooofficial.github.io/myRETROGAMES/'],
-            ['Bin Bash Games', 'https://bidoofery.github.io/gfiles/list.html'],
-            ['Native Games', 'https://bidoofery.github.io/nativegames/'],
-            ['GAMEBOY Advance Games', 'https://bidoofery.github.io/gam3b0y/'],
-            ['GBA Online Games', 'https://gba.js.org/'],
-            ['OutRed Games', 'https://outred.org/games.html'],
-            ['GBA Emulator Games', 'https://theclashman2.github.io/GBA-Emulator/'],
-            ['Unblocked Games World', 'https://sites.google.com/site/thegamecompilation/home?authuser=0'],
-            ['Now.gg Games', 'https://now.gg/'],
-            ['Dancing Bunny Games', 'https://ltorl.github.io/dancing-bunny/public/v2.html'],
-        ];
 
         const BAREMUX_WORKER = URL.createObjectURL(new Blob(
             [`importScripts("${HOST}/baremux/worker.js");`],
@@ -3314,29 +3290,7 @@ self.addEventListener("fetch", (event) => {
         document.getElementById('btn-reload').appendChild(imgEl(ICON_RELOAD));
         starBtn.appendChild(imgEl(STAR_OFF));
 
-        const gamesSidebar = document.getElementById('games-sidebar');
-        const gamesList = document.getElementById('games-sidebar-list');
-        gamesBtn.appendChild(imgEl(GAMES_ICON));
 
-        function setGamesSidebar(open) {
-            gamesSidebar.classList.toggle('open', open);
-            gamesBtn.classList.toggle('active', open);
-        }
-
-        GAMES.forEach(([label, url]) => {
-            const link = document.createElement('div');
-            link.className = 'gs-link';
-            link.textContent = label;
-            link.addEventListener('click', () => {
-                const tab = tabs.find(t => t.id === activeId);
-                if (tab) navigateTab(tab, url);
-                setGamesSidebar(false);
-            });
-            gamesList.appendChild(link);
-        });
-
-        gamesBtn.addEventListener('click', () => setGamesSidebar(!gamesSidebar.classList.contains('open')));
-        document.getElementById('games-sidebar-close').addEventListener('click', () => setGamesSidebar(false));
 
         const settingsBtn = document.getElementById('settings-btn');
         settingsBtn.appendChild(imgEl(SETTINGS_ICON));
