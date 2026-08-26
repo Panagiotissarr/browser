@@ -479,6 +479,7 @@
             margin-left: 2px;
         }
 
+        #games-btn img,
         #settings-btn img {
             width: 22px;
             height: 22px;
@@ -486,6 +487,7 @@
             -webkit-user-drag: none;
         }
 
+        #games-btn.active,
         #settings-btn.active {
             background: rgba(120, 170, 255, 0.18);
         }
@@ -1125,6 +1127,15 @@
             <div id="bookmarksbar"></div>
         </div>
 
+        <div id="content">
+            <aside id="games-sidebar" class="sidebar">
+                <div class="sidebar-head">
+                    <span>Games</span>
+                    <button id="games-sidebar-close" class="icon-btn sidebar-close" title="Close">×</button>
+                </div>
+                <div id="games-sidebar-list" class="sidebar-body"></div>
+            </aside>
+        </div>
 
         <div id="url-suggest"></div>
         <div id="site-panel"></div>
